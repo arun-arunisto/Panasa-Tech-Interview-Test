@@ -34,6 +34,10 @@ Create a virtual environment and install dependencies:
    venv\Scripts\activate #for windows
    pip install -r requirements.txt 
 ```
+And move to the project folder:
+```bash
+cd project_folder
+```
 Set up the database:
 
 ```bash
