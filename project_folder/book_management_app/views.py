@@ -4,21 +4,25 @@ from rest_framework.response import Response
 from .models import Author, Book, Review
 from .serializers import AuthorSerializer, BookSerializer, ReviewSerializer
 
+#for creating and listing authors
 class AuthorListCreateView(generics.ListCreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
     permission_classes = [IsAuthenticated]
 
+    #adding number of books
     def perform_create(self, serializer):
         author = serializer.save()
         author.num_books = author.book_set.count()
         author.save()
 
+#for listing and creating books
 class BookListCreateView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
 
+#for updating the book
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -29,6 +33,7 @@ class BookUpdateView(generics.UpdateAPIView):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
+#for reviewing author and books
 class ReviewCreateView(generics.CreateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
@@ -43,6 +48,7 @@ class ReviewCreateView(generics.CreateAPIView):
             instance.total_rating = instance.book.total_rating
         instance.save()
 
+#for listing reviews of a particular author
 class AuthorReviewListView(generics.ListAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
